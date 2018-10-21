@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,15 +70,16 @@ public class UserService {
 	public List<User> findAllUsers() {
 		return users;
 	}
-
-	public User findUserById(int userId) {
+	
+	@GetMapping("/api/user/{id}")
+	public User findUserById(@PathVariable("id") int userId) {
 		for(User user: users) {
 			if(user.getId() == userId)
 				return user;
 		}
 		return null;
 	}
-
+	
 	@PostMapping("/api/user")
 	public List<User> createUser(@RequestBody User user) {
 		users.add(user);

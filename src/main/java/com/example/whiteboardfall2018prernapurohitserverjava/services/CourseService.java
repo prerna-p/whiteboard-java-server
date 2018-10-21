@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,16 +36,28 @@ public class CourseService {
 		user.getCourses().add(course);
 		return user.getCourses();
 	}
-
-	public Course findCourseById(int courseId) {
-		List<User> users = userService.findAllUsers();
-		for(User user: users) {
-			List<Course> courses = user.getCourses();
-			for(Course course: courses) {
-				if(course.getId() == courseId)
-					return course;
-			}
+	
+	@GetMapping("/api/user/{userId}/course/{cid}")
+	public Course findCourseById(
+			@PathVariable("userId") int userId,
+			@PathVariable("cid") int courseId) {
+		User user = userService.findUserById(userId);
+		List<Course> courses = user.getCourses();
+		for(Course course: courses) {
+			if(course.getId() == courseId)
+				return course;
 		}
 		return null;
+	}
+	
+	@PutMapping("/api/user/{userId}/course/{cid}")
+	public List<Course> updateCourse(
+			@PathVariable("userId") int userId,
+			@PathVariable("cid") int courseId,
+			@RequestBody Course newCourse) {
+		User user = userService.findUserById(userId);
+		Course course = findCourseById(courseId, userId);
+		
+		
 	}
 }
