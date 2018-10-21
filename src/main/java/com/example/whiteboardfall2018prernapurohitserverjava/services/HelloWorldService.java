@@ -1,4 +1,4 @@
-package com.example.whiteboardfall2018prernapurohitserverjava.services;
+/*package com.example.whiteboardfall2018prernapurohitserverjava.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.whiteboardfall2018prernapurohitserverjava.models.Message;
+import com.example.whiteboardfall2018prernapurohitserverjava.models.Message;;
 
 @RestController
 public class HelloWorldService {
@@ -29,3 +29,4 @@ public class HelloWorldService {
 	}
 
 }
+*/
