@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,9 @@ import com.example.whiteboardfall2018prernapurohitserverjava.models.User;
 @CrossOrigin(origins = "*")
 public class CourseService {
 
+	int userId;
+	int courseId;
+	
 	@Autowired
 	UserService userService;
 
@@ -41,10 +45,10 @@ public class CourseService {
 	public Course findCourseById(
 			@PathVariable("userId") int userId,
 			@PathVariable("cid") int courseId) {
-		User user = userService.findUserById(userId);
+		User user = userService.findUserById(this.userId);
 		List<Course> courses = user.getCourses();
 		for(Course course: courses) {
-			if(course.getId() == courseId)
+			if(course.getId() == this.courseId)
 				return course;
 		}
 		return null;
@@ -57,7 +61,26 @@ public class CourseService {
 			@RequestBody Course newCourse) {
 		User user = userService.findUserById(userId);
 		Course course = findCourseById(courseId, userId);
+		List<Course> courses = user.getCourses();
+		courses.remove(course);
+		courses.add(newCourse);
+		return courses;
 		
+	}
+	@DeleteMapping("/api/user/{userId}/course/{cid}")
+	public List<Course> deleteCourse(
+			@PathVariable("userId") int userId,
+			@PathVariable("cid") int courseId) {
+		System.out.println("In delete course: userId:  "+ userId);
+		User user = userService.findUserById(userId);
+		this.userId = userId;
+		this.courseId = courseId;
+		System.out.println("In delete couse: user:  "+ user);
+		Course course = findCourseById(this.courseId, this.userId);
+		System.out.println("In delete course: course:  "+course.getId());
+		List<Course> courses = user.getCourses();
+		courses.remove(course);
+		return courses;
 		
 	}
 }

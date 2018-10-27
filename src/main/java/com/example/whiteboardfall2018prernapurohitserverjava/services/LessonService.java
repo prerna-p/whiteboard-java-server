@@ -22,8 +22,8 @@ import com.example.whiteboardfall2018prernapurohitserverjava.models.User;
 public class LessonService {
 	@Autowired
 	UserService userService;
-	int userId,courseId;
-	List<Lesson> myLessons;
+	int userId,courseId,moduleId;
+
 	
 	@GetMapping("/api/user/{userId}/course/{cid}/module/{mid}/lesson")
 	public List<Lesson> findLessonsForCourseId(
@@ -37,7 +37,7 @@ public class LessonService {
 			if(course.getId() == courseId) {
 				for(Module module: course.getModules()) {
 					if(module.getId() == moduleId) {
-						myLessons = module.getLessons();
+						this.moduleId = moduleId;
 						return module.getLessons();
 					}
 				}
@@ -57,14 +57,15 @@ public class LessonService {
 	public List<Lesson> createLesson(
 			@PathVariable("mid") int midId,
 			@RequestBody Lesson lesson) {
-		List<Lesson> lessonList = findAllLessons(midId);
-		lessonList.add(lesson);
-		return lessonList;
+		List<Lesson> myLessons = findAllLessons(midId);
+		myLessons.add(lesson);
+		return myLessons;
 	}
 	
 	@GetMapping("/api/lesson/{lid}")
 	public Lesson findLessonById(
 			@PathVariable("lid") int lessonId) {
+		List<Lesson> myLessons = findAllLessons(this.moduleId);
 		for(Lesson les : myLessons) {
 			if(les.getId() == lessonId)
 				return les;
@@ -78,6 +79,7 @@ public class LessonService {
 			@RequestBody Lesson newLesson){
 		
 		Lesson old = findLessonById(lessonId);
+		List<Lesson> myLessons = findAllLessons(this.moduleId);
 		myLessons.remove(old);
 		myLessons.add(newLesson);
 		return myLessons;
@@ -88,6 +90,7 @@ public class LessonService {
 	public List<Lesson> deleteLesson(
 			@PathVariable("lid") int lessonId){
 		
+		List<Lesson> myLessons = findAllLessons(this.moduleId);
 		Lesson old = findLessonById(lessonId);
 		myLessons.remove(old);
 		return myLessons;

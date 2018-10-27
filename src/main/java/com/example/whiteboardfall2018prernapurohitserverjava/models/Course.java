@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
-	  private int id = (int)(Math.random() * Integer.MAX_VALUE);
+	  private int id = User.autoIncrement++;//(int)(Math.random() * Integer.MAX_VALUE);
 	  private String title;
 	  private List<Module> modules = new ArrayList<Module>();
 	  public Course(String title) {

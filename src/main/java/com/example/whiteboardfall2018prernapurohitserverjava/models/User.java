@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-	private int id = (int)(Math.random() * Integer.MAX_VALUE);
+	public static int autoIncrement = 0;
+	private int id = autoIncrement++;//(int)(Math.random() * Integer.MAX_VALUE);
 	private String username;
 	private String password;
 	private String firstName;

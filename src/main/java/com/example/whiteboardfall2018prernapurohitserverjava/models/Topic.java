@@ -1,7 +1,7 @@
 package com.example.whiteboardfall2018prernapurohitserverjava.models;
 
 public class Topic {
-	private int id = (int)(Math.random() * Integer.MAX_VALUE);
+	private int id = User.autoIncrement++;//(int)(Math.random() * Integer.MAX_VALUE);
 	private String title;
 	public Topic() {}
 	public Topic(String title) {
