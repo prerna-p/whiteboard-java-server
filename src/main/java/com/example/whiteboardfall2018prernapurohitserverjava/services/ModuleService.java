@@ -20,7 +20,6 @@ import com.example.whiteboardfall2018prernapurohitserverjava.models.Module;
 import com.example.whiteboardfall2018prernapurohitserverjava.models.User;
 
 @RestController
-//@CrossOrigin(origins = "*")
 @CrossOrigin(origins = "http://localhost:3000" , allowCredentials = "true" , allowedHeaders = "*")
 public class ModuleService {
 	@Autowired
@@ -42,11 +41,8 @@ public class ModuleService {
 			@PathVariable("cid") int courseId,
 			HttpSession session) {
 		User currentUser = (User)session.getAttribute("currentUser");
-		//System.out.println("currentUser MODULE "+ currentUser.getId());	
-		//System.out.println("courseID  "+ courseId);
 		Course course = courseService.findCourseById(currentUser.getId(), courseId);
 		this.userId = currentUser.getId();
-		System.out.println("modules      " + course.getModules());
 		return course.getModules();
 	}
 	
@@ -81,10 +77,14 @@ public class ModuleService {
 			@RequestBody Module module,
 			HttpSession session) {
 		User currentUser = (User)session.getAttribute("currentUser");
-		Module m = findModuleById(courseId, moduleId);
 		List<Module> moduleList = findAllModules(currentUser.getId(), courseId);
-		moduleList.remove(m);
-		moduleList.add(module);
+		for(Module module1 : moduleList) {
+			if(module1.getId() == module.getId()) {
+				module1.setTitle(module.getTitle());
+				return moduleList;
+			}
+		}
+		
 		return moduleList; 
 	}
 	
@@ -93,7 +93,7 @@ public class ModuleService {
 			@PathVariable("cid") int courseId,
 			@PathVariable("mid") int moduleId,
 			HttpSession session) {
-		System.out.println("In DELETE");
+	
 		User currentUser = (User)session.getAttribute("currentUser");
 		Course course = courseService.findCourseById(currentUser.getId(), courseId);
 		List<Module> moduleList = course.getModules();

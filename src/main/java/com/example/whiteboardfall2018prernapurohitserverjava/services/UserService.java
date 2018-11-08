@@ -80,12 +80,8 @@ public class UserService {
 	
 	@GetMapping("/api/user/{id}")
 	public User findUserById(@PathVariable("id") int userId) {
-		System.out.println("in findUserById");
-		System.out.println("id" + userId);
 		for(User user: users) {
 			if(user.getId() == userId) {
-				System.out.println("SUCCESS");
-				System.out.println("user   "+user);
 				return user;
 			}
 				
@@ -105,8 +101,6 @@ public class UserService {
 			HttpSession session, HttpServletRequest request) {
 		session.setAttribute("currentUser", user);
 		newSession=session;
-		//System.out.println(user.getUsername());
-		
 		users.add(user);
 		return user;
 	}
@@ -115,7 +109,6 @@ public class UserService {
 	@GetMapping("/api/profile")
 	public User profile(HttpSession session, HttpServletRequest request) {
 		User currentUser = (User)newSession.getAttribute("currentUser");
-		//System.out.println(currentUser);
 		return currentUser;
 	}
 	
@@ -129,8 +122,7 @@ public class UserService {
 			@RequestBody User credentials,
 			HttpSession session) {
 	 for (User user : users) {
-	  if( user.getUsername().equals(credentials.getUsername())
-	   /*|| user.getPassword().equals(credentials.getPassword())*/) {
+	  if( user.getUsername().equals(credentials.getUsername())) {
 	    session.setAttribute("currentUser", user);
 	    newSession = session;
 	    return user;
