@@ -18,8 +18,8 @@ import com.example.whiteboardfall2018prernapurohitserverjava.models.Course;
 import com.example.whiteboardfall2018prernapurohitserverjava.models.User;
 
 @RestController
-//@CrossOrigin(origins = "*")
-@CrossOrigin(origins = "http://localhost:3000" , allowCredentials = "true" , allowedHeaders = "*")
+
+@CrossOrigin(origins = "http://course-manager-react-client.herokuapp.com" , allowCredentials = "true" , allowedHeaders = "*")
 public class CourseService {
 
 	int userId;

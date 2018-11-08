@@ -21,7 +21,7 @@ import com.example.whiteboardfall2018prernapurohitserverjava.models.Topic;
 import com.example.whiteboardfall2018prernapurohitserverjava.models.User;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000" , allowCredentials = "true" , allowedHeaders = "*")
+@CrossOrigin(origins = "http://course-manager-react-client.herokuapp.com" , allowCredentials = "true" , allowedHeaders = "*")
 public class TopicService {
 	@Autowired
 	UserService userService;
