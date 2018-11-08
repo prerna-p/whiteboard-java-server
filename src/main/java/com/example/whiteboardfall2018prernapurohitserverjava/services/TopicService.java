@@ -2,6 +2,8 @@ package com.example.whiteboardfall2018prernapurohitserverjava.services;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,21 +21,21 @@ import com.example.whiteboardfall2018prernapurohitserverjava.models.Topic;
 import com.example.whiteboardfall2018prernapurohitserverjava.models.User;
 
 @RestController
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "http://localhost:3000" , allowCredentials = "true" , allowedHeaders = "*")
 public class TopicService {
 	@Autowired
 	UserService userService;
 	int userId, courseId, moduleId, lessonId;
 	
 	
-	@GetMapping("/api/user/{userId}/course/{courseId}/module/{moduleId}/lesson/{lessonId}/topic")
+	@GetMapping("/api/course/{courseId}/module/{moduleId}/lesson/{lessonId}/topic")
 	public List<Topic> findTopicsForLessonId(
-			@PathVariable("userId") int userId,
 			@PathVariable("courseId") int courseId,
 			@PathVariable("moduleId") int moduleId,
-			@PathVariable("lessonId") int lessonId) {
-		User user = userService.findUserById(userId);
-		this.userId = userId;
+			@PathVariable("lessonId") int lessonId,
+			HttpSession session) {
+		User user = (User)session.getAttribute("currentUser");
+		this.userId = user.getId();
 		for(Course course: user.getCourses()) {
 			if(course.getId() == courseId) {
 				this.courseId = courseId;
@@ -53,7 +55,7 @@ public class TopicService {
 		return null;
 	}
 	
-	@GetMapping("/api/lesson/{lid}/topic")
+	/*@GetMapping("/api/lesson/{lid}/topic")
 	public List<Topic> findAllTopics(
 			@PathVariable("lid") int lessonId){
 			return findTopicsForLessonId(this.userId, this.courseId, this.moduleId, this.lessonId);
@@ -105,6 +107,6 @@ public class TopicService {
 		myTopics.remove(old);
 		return myTopics;
 	}
-
+*/
 }
 

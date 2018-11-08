@@ -2,6 +2,8 @@ package com.example.whiteboardfall2018prernapurohitserverjava.services;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +18,8 @@ import com.example.whiteboardfall2018prernapurohitserverjava.models.Course;
 import com.example.whiteboardfall2018prernapurohitserverjava.models.User;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000" , allowCredentials = "true" , allowedHeaders = "*")
 public class CourseService {
 
 	int userId;
@@ -27,15 +30,19 @@ public class CourseService {
 
 	List<Course> courses = null;
 	@GetMapping("/api/user/{userId}/course")
-	public List<Course> findAllCourses(@PathVariable("userId") int userId) {
-		User user = userService.findUserById(userId);
-	    return user.getCourses();
+	public List<Course> findAllCourses(@PathVariable("userId") int userId,
+			HttpSession session) {
+		 User currentUser = (User)session.getAttribute("currentUser");
+		//System.out.println("currentUser"+ currentUser.getId());	
+		//User user = userService.findUserById(userId);
+	    return currentUser.getCourses();
+	   
 	}
 
 	@PostMapping("/api/user/{userId}/course")
 	public List<Course> createCourse(
 			@PathVariable("userId") int userId,
-			@RequestBody Course course) {
+			@RequestBody Course course){
 		User user = userService.findUserById(userId);
 		user.getCourses().add(course);
 		return user.getCourses();
@@ -45,10 +52,12 @@ public class CourseService {
 	public Course findCourseById(
 			@PathVariable("userId") int userId,
 			@PathVariable("cid") int courseId) {
-		User user = userService.findUserById(this.userId);
+		
+		System.out.println("in findcoursebyid" + userId);
+		User user = userService.findUserById(userId);
 		List<Course> courses = user.getCourses();
 		for(Course course: courses) {
-			if(course.getId() == this.courseId)
+			if(course.getId() == courseId)
 				return course;
 		}
 		return null;
@@ -67,19 +76,26 @@ public class CourseService {
 		return courses;
 		
 	}
+	
 	@DeleteMapping("/api/user/{userId}/course/{cid}")
 	public List<Course> deleteCourse(
 			@PathVariable("userId") int userId,
 			@PathVariable("cid") int courseId) {
-		System.out.println("In delete course: userId:  "+ userId);
+		
 		User user = userService.findUserById(userId);
-		this.userId = userId;
-		this.courseId = courseId;
-		System.out.println("In delete couse: user:  "+ user);
-		Course course = findCourseById(this.courseId, this.userId);
-		System.out.println("In delete course: course:  "+course.getId());
+		//Course course = findCourseById(courseId, userId);
 		List<Course> courses = user.getCourses();
-		courses.remove(course);
+		Course courseToDel = null;
+		for(Course course: courses) {
+			if(course.getId() == courseId)
+				courseToDel = course;
+		}
+		if(!courseToDel.equals(null)) {
+			courses.remove(courseToDel);
+		}
+		else {
+			System.out.println("Course not found");
+		}
 		return courses;
 		
 	}

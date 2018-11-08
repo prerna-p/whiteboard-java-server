@@ -22,7 +22,8 @@ import com.example.whiteboardfall2018prernapurohitserverjava.models.Topic;
 import com.example.whiteboardfall2018prernapurohitserverjava.models.User;
 
 @RestController
-@CrossOrigin(origins="*")
+//@CrossOrigin(origins="*")
+@CrossOrigin(origins = "http://localhost:3000" , allowCredentials = "true" , allowedHeaders = "*")
 public class UserService {
 	
 	
@@ -33,7 +34,7 @@ public class UserService {
 	static String[] courseTitles = {"cs5200", "cs5610", "cs5500"};
 	static String[] moduleTitles = {"Module 1", "Module 2"};
 	static String[] lessonTitles = {"lesson 1", "lesson 2"};
-	static String[] topicTitles = {"topic 1", "topic 2"};
+	static String[] topicTitles = {"topic 1", "topic 2","topic 3"};
 	{
 		List<Topic> topics = new ArrayList<Topic>();
 		for(String topicTitle : topicTitles) {
@@ -129,7 +130,7 @@ public class UserService {
 			HttpSession session) {
 	 for (User user : users) {
 	  if( user.getUsername().equals(credentials.getUsername())
-	   || user.getPassword().equals(credentials.getPassword())) {
+	   /*|| user.getPassword().equals(credentials.getPassword())*/) {
 	    session.setAttribute("currentUser", user);
 	    newSession = session;
 	    return user;
